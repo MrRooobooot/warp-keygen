@@ -1,0 +1,23 @@
+name: mint
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+permissions:
+  contents: write
+jobs:
+  mint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node mint.mjs
+      - name: commit key
+        run: |
+          git config user.name  "warp-mint"
+          git config user.email "warp-mint@users.noreply.github.com"
+          git add docs/key.json
+          git diff --cached --quiet || git commit -m "mint $(date -u +%FT%TZ)"
+          git push

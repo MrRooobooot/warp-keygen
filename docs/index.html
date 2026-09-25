@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>کلید WARP</title>
+<style>
+  :root { color-scheme: dark }
+  * { box-sizing: border-box }
+  body { margin:0; padding:24px; background:#0b1017; color:#e6edf3;
+         font:16px/1.7 -apple-system,"SF Pro Text",system-ui,sans-serif }
+  main { max-width:640px; margin:0 auto }
+  h1 { font-size:20px; margin:0 0 4px }
+  .sub { color:#8b949e; font-size:13px; margin-bottom:20px }
+  .card { background:#131a24; border:1px solid #263041; border-radius:14px; padding:16px 18px; margin-bottom:14px }
+  .lbl { color:#8b949e; font-size:12px; margin-bottom:6px }
+  .key { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:19px;
+         direction:ltr; text-align:left; word-break:break-all; color:#7ee787 }
+  button { background:#1f6feb; color:#fff; border:0; border-radius:9px; padding:9px 16px;
+           font:inherit; font-size:14px; cursor:pointer }
+  button.ghost { background:#21262d; border:1px solid #30363d }
+  .row { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px }
+  .meta { display:flex; gap:18px; flex-wrap:wrap; font-size:13px; color:#8b949e }
+  .meta b { color:#e6edf3; font-weight:600 }
+  .warn { font-size:13px; color:#d29922 }
+  #out { font-size:13px; color:#7ee787; min-height:18px }
+  pre { background:#0d1117; border:1px solid #21262d; border-radius:9px; padding:12px;
+        direction:ltr; text-align:left; font-size:12px; overflow:auto; color:#c9d1d9 }
+</style>
+</head>
+<body>
+<main>
+  <h1>کلید WARP</h1>
+  <div class="sub">هر ۶ ساعت یک اکانت تازه ساخته می‌شود — یا با دکمه «کلید تازه» همین حالا</div>
+
+  <div class="card">
+    <div class="lbl">کلید مجوز (در اپ ۱.۱.۱.۱ → Advanced → License key بچسبان)</div>
+    <div class="key" id="k">…</div>
+    <div class="row">
+      <button onclick="copyKey()">کپی کلید</button>
+      <button class="ghost" onclick="dl()">دانلود کانفیگ WireGuard</button>
+      <button class="ghost" onclick="load(true)">به‌روزرسانی</button>
+      <a href="https://github.com/MrRooobooot/warp-keygen/actions/workflows/mint.yml"
+         target="_blank"><button class="ghost">ساخت کلید تازه (ورود گیت‌هاب)</button></a>
+    </div>
+    <div id="out"></div>
+  </div>
+
+  <div class="card">
+    <div class="meta" id="meta"></div>
+    <div class="warn" id="warn"></div>
+  </div>
+
+  <div class="card">
+    <div class="lbl">کانفیگ WireGuard</div>
+    <pre id="conf">…</pre>
+  </div>
+</main>
+
+<script>
+let D = null;
+
+async function load(bust) {
+  const el = document.getElementById('out');
+  el.textContent = 'در حال ساخت…';
+  const u = 'key.json' + (bust ? '?t=' + Date.now() : '');
+  try {
+    D = await (await fetch(u, { cache: bust ? 'no-store' : 'default' })).json();
+  } catch (e) { el.textContent = 'خطا در خواندن کلید'; return; }
+  document.getElementById('k').textContent = D.license;
+  document.getElementById('conf').textContent = D.wireguard_conf;
+  document.getElementById('meta').innerHTML =
+    '<span>ساخته‌شده: <b>' + new Date(D.generated_at).toLocaleString('fa-IR') + '</b></span>' +
+    '<span>اعتبار: <b>' + new Date(D.expires).toLocaleDateString('fa-IR') + '</b></span>' +
+    '<span>آدرس: <b>' + D.address + '</b></span>' +
+    '<span>سرور: <b>' + D.endpoint + '</b></span>';
+  document.getElementById('warn').textContent =
+    D.premium_data > 0
+      ? 'سهمیه پریمیوم: ' + D.premium_data + 'GB'
+      : 'هشدار: این اکانت WARP+ flag دارد ولی سهمیه پریمیوم ۰ است — سیستم referral کلادفلر بسته شده. مصرف محدود/رایگان است، نامحدود نیست.';
+  el.textContent = '';
+}
+
+function copyKey() {
+  navigator.clipboard.writeText(D.license).then(() => document.getElementById('out').textContent = 'کپی شد');
+}
+
+function dl() {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([D.wireguard_conf], { type: 'text/plain' }));
+  a.download = 'warp-' + D.license.slice(0, 8) + '.conf';
+  a.click();
+}
+
+load(false);
+</script>
+</body>
+</html>
