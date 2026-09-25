@@ -1,0 +1,17 @@
+name: gen
+on:
+  workflow_dispatch:
+    inputs:
+      boost:
+        default: '5'
+jobs:
+  gen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node gen.mjs
+        env:
+          BOOST: ${{ inputs.boost }}
