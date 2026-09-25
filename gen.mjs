@@ -27,26 +27,27 @@ async function reg(referrer) {
   const t = await r.text();
   if (!r.ok) return { error: `HTTP ${r.status}`, body: t.slice(0, 400) };
   const j = JSON.parse(t);
-  if (!j.result) { console.log('RAW=' + t.slice(0, 800)); return { raw: t.slice(0, 400) }; }
   return {
-    id: j.result.id, token: j.result.token, private_key: priv,
-    license: j.result.account?.license,
-    premium_data: j.result.account?.premium_data,
-    warp_plus: j.result.account?.warp_plus,
-    account_type: j.result.account?.account_type,
-    peer: j.result.config?.peers?.[0],
-    addresses: j.result.config?.interface?.addresses,
-    client_id: j.result.config?.client_id,
+    id: j.id, token: j.token, private_key: priv, public_key: pub,
+    license: j.account?.license,
+    premium_data: j.account?.premium_data,
+    warp_plus: j.account?.warp_plus,
+    account_type: j.account?.account_type,
+    referral_count: j.account?.referral_count,
+    peer: j.config?.peers?.[0],
+    addresses: j.config?.interface?.addresses,
+    client_id: j.config?.client_id,
   };
 }
 
 async function account(id, token) {
   const r = await fetch(`${BASE}/reg/${id}/account`, { headers: { ...H, Authorization: 'Bearer ' + token } });
   if (!r.ok) return { error: `HTTP ${r.status}` };
-  const a = (await r.json()).result;
+  const a = await r.json();
+  const x = a.result ?? a.account ?? a;
   return {
-    license: a.license, premium_data: a.premium_data, warp_plus: a.warp_plus,
-    account_type: a.account_type, referral_count: a.referral_count, quota: a.quota, usage: a.usage,
+    license: x.license, premium_data: x.premium_data, warp_plus: x.warp_plus,
+    account_type: x.account_type, referral_count: x.referral_count, quota: x.quota, usage: x.usage,
   };
 }
 
