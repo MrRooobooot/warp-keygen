@@ -27,6 +27,7 @@ async function reg(referrer) {
   const t = await r.text();
   if (!r.ok) return { error: `HTTP ${r.status}`, body: t.slice(0, 400) };
   const j = JSON.parse(t);
+  if (!j.result) { console.log('RAW=' + t.slice(0, 800)); return { raw: t.slice(0, 400) }; }
   return {
     id: j.result.id, token: j.result.token, private_key: priv,
     license: j.result.account?.license,
