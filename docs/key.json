@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-01T06:00:03.694Z",
-  "license": "DH6d472E-5U169hAW-s1R045Bk",
+  "generated_at": "2026-10-01T13:21:26.490Z",
+  "license": "n4F89g0Z-67q8IQ1b-392ySHs7",
   "warp_plus": true,
   "premium_data": 0,
   "account_type": "free",
-  "expires": "2026-12-30T06:00:02.825933141Z",
+  "expires": "2026-12-30T13:21:26.010334555Z",
   "address": "172.16.0.2",
   "endpoint": "engage.cloudflareclient.com:2408",
-  "client_id": "VYH6",
-  "wireguard_conf": "[Interface]\nPrivateKey = eGPhk4WzhrzT7Mno29ppFe6q+Fn6oaqlwKIq6WrFq2o=\nAddress = 172.16.0.2/32\nDNS = 1.1.1.1\nMTU = 1280\n\n[Peer]\nPublicKey = bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=\nAllowedIPs = 0.0.0.0/0\nEndpoint = engage.cloudflareclient.com:2408\n"
+  "client_id": "7XCf",
+  "wireguard_conf": "[Interface]\nPrivateKey = MHchfZw7F7EkHroN6nARx5e5ESnVt2+boIAaXr9/6GQ=\nAddress = 172.16.0.2/32\nDNS = 1.1.1.1\nMTU = 1280\n\n[Peer]\nPublicKey = bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=\nAllowedIPs = 0.0.0.0/0\nEndpoint = engage.cloudflareclient.com:2408\n"
 }
