@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Fresh end-to-end verification of the WARP generator (re-dispatches the workflow)."""
-import json, re, subprocess, sys, time
+import json, os, re, subprocess, sys, time
 
 R = "MrRooobooot/warp-keygen"
-S = "/Users/aidin/.hermes/profiles/daily/cache/scratch/warpgh"
+S = os.path.dirname(os.path.abspath(__file__))
 
 
 def sh(cmd, timeout=600):
